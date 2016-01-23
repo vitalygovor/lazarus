@@ -8,30 +8,19 @@ var Clouder = {
 
                 console.log('selectBlock');
                 // Выбираем все блоки с классом block
-                var blocks = document.getElementsByClassName('block');
+                var BLOCKS = document.getElementsByClassName('block');
                 // Цикл по всем block
 
-                Clouder.each(blocks, function(key, block){
-                    block.className = "block";
+                Clouder.each(BLOCKS, function(key, block){
                     block.style.cursor = "pointer";
                     block.setAttribute("bid", key);
 
                     block.addEventListener('click', function(event){
                         var bIDs = Clouder.buffer.selectedBlocks;
-                        if(bIDs.length == 0){
-                            block.className = "block";
-                            block.className += " selected";
-                            console.log('Click!');
-
-                            // for (var i = 0; i < blocks.length; i++) {
-                            //     if(i != )
-                            //     // var element = document.querySelectorAll( 'div[bid="'+i+'"]' );
-                            //     document.querySelectorAll('div[bid="'+i+'"]' ).className = "block";
-                            //     // element.className += " selected";   
-                            // }
-                        }
-
+                        var CleckedBlock = this.getAttribute('bid');
+                        
                         if(event.shiftKey){
+                           
                             var bIDs = Clouder.buffer.selectedBlocks;
                             var index = bIDs.indexOf(key);
 
@@ -45,9 +34,44 @@ var Clouder = {
                                 Clouder.events.selectBlockStyle(this);
                             }
                         } else {
+
+                            Clouder.each(BLOCKS, function(key, block){
+                                block.className = "block";
+                                if(key == CleckedBlock) block.className += " selected";
+                            });
+
+
+                            if(bIDs.length == 0) {
+                                console.log('Не выбрано ни одного блока');
+                            } 
+
                             Clouder.buffer.selectedBlocks = [];
                             Clouder.events.selectBlockStyle(this, key);  
                         }
+
+
+                        // if(bIDs.length == 0){
+                            
+                        //     var bIDofThisBlock = this.getAttribute("bid");
+                        //     var CountOfBufferSelectedBlocks = Clouder.buffer.selectedBlocks;
+
+                        //     // console.log(this.getAttribute("bid"));
+                        //     for (var i = 0; i < blocks.length; i++) {
+                        //         if(i != this.getAttribute("bid")) {
+                        //             block.className = "block";
+                        //             // console.log("i:"+i);
+
+                        //         } else if(i == this.getAttribute("bid")) {
+                        //             this.className = "block selected";
+                        //             console.log("i:"+i);
+
+                        //         }
+                        //         // var element = document.querySelectorAll( 'div[bid="'+i+'"]' );
+                        //         // document.querySelectorAll('div[bid="'+i+'"]' ).className = "block selected";
+                        //         // element.className += " selected";   
+                        //     }
+                        // } 
+                        
                         console.log(Clouder.buffer.selectedBlocks);
                     });
                 });
@@ -58,13 +82,13 @@ var Clouder = {
             var bIDs = Clouder.buffer.selectedBlocks;
 
             function resetStyles(element){
-                for (var i = 1; i <= bIDs.length; i++) {
+                for (var i = 0; i <= bIDs.length; i++) {
                     console.log(i);
                 }
             }
             console.log(bIDs.length);
 
-            if(bIDs.length > 1){
+            if(bIDs.length > 0){
                element.className = "block";
                element.className += " selected";
             } else {
