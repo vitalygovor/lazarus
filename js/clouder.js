@@ -15,7 +15,21 @@ var Clouder = {
                     block.className = "block";
                     block.style.cursor = "pointer";
                     block.setAttribute("bid", key);
+
                     block.addEventListener('click', function(event){
+                        var bIDs = Clouder.buffer.selectedBlocks;
+                        if(bIDs.length == 0){
+                            block.className = "block";
+                            block.className += " selected";
+                            console.log('Click!');
+
+                            // for (var i = 0; i < blocks.length; i++) {
+                            //     if(i != )
+                            //     // var element = document.querySelectorAll( 'div[bid="'+i+'"]' );
+                            //     document.querySelectorAll('div[bid="'+i+'"]' ).className = "block";
+                            //     // element.className += " selected";   
+                            // }
+                        }
 
                         if(event.shiftKey){
                             var bIDs = Clouder.buffer.selectedBlocks;
@@ -48,10 +62,9 @@ var Clouder = {
                     console.log(i);
                 }
             }
-
             console.log(bIDs.length);
 
-            if(bIDs.length >= 1){
+            if(bIDs.length > 1){
                element.className = "block";
                element.className += " selected";
             } else {
@@ -67,6 +80,7 @@ var Clouder = {
     },
     buffer: {
         selectedBlocks: [],
+        selectBlock: [],
     },
     each: function each(data, callback){
         for(var key in data){
