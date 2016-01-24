@@ -30,50 +30,56 @@ var Clouder = {
                     block.setAttribute("bid", key);
                     // Прослушиваем действие
                     block.addEventListener('click', function(event){
-                        var CleckedBlock = this.getAttribute('bid');
+                        var CheckedBlock = this.getAttribute('bid');
                         
+
                         if(event.shiftKey){
+                            // Если проиходит выделение с нажатым Shift-ом
                             GroupSelect(this, key);
                         } else {
+                            // Если проиходит простое выделениие
+
+                            // Обнуляем массив объектов, чтобы отчистить память
+                            BIDS = [];
+                            // Добавляем объект в массив, который выделен
+                            BIDS.push(CheckedBlock);
+                            // Сбрасываем стили с невыделенных блоков
                             resetStylesForNotSelectedBlocks();
                             // Clouder.func.block.style(this, key);  
                         }
 
+
+                        // Групповое выделение
                         function GroupSelect(block, key){
                             var index = BIDS.indexOf(key);
 
                             if (index > -1) {
+                                // Если блок уже есть в массиве
                                 BIDS.splice(index, 1);
+                                ChangeClasses(block, '', "block"); 
                             } else {
+                                // Если блока еще нет в массиве
                                 BIDS.push(key);
-                                Clouder.ui.block.style(block, key); 
+                                ChangeClasses(block, 'selected', "block"); 
                             }
                         }
 
+                        // Сброс стилей с невыделенных объектов
                         function resetStylesForNotSelectedBlocks(key, block) {
                             Each(BLOCKS, function(key, block){
                                 ChangeClasses(block, '', "block");
-                                if(key == CleckedBlock) ChangeClasses(block, 'selected', "block");
+                                if(key == CheckedBlock) {
+                                    ChangeClasses(block, 'selected', "block");
+                                }
                             });
                         }
-                        
+
+                        // На случай проверки массива из блоков
+                        // console.log(BIDS);
                     });
                 });
 
                 console.log(Clouder.BUFFER.block.select);
-
-            },
-            style: function(element, key){
-
-                // Установка переменных буфера
-                var BUFFER = Clouder.BUFFER.block.select;
-                // Массив для блоков
-                var BIDS = BUFFER.blocks;
-
-                if(BIDS.length > 0){
-                   element.className = "block";
-                   element.className += " selected";
-                }
 
             }
         }
