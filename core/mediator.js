@@ -1,71 +1,69 @@
-
-
-function Daddy() { }
-
-
-Daddy.prototype = {
-    constructor: Daddy,
-
-    getBeer: function ()
-    {
-        if (!kitchen.tryToGetBeer())
-        {
-            console.log("Daddy: Who the hell drank all my beer?");
-            return false;
+var Participant = function(name) {
+    this.name = name;
+    this.chatroom = null;
+};
+ 
+Participant.prototype = {
+    send: function(message, to) {
+        this.chatroom.send(message, this, to);
+    },
+    receive: function(message, from) {
+        log.add(from.name + " to " + this.name + ": " + message);
+    }
+};
+ 
+var Chatroom = function() {
+    var participants = {};
+ 
+    return {
+ 
+        register: function(participant) {
+            participants[participant.name] = participant;
+            participant.chatroom = this;
+        },
+ 
+        send: function(message, from, to) {
+            if (to) {                      // single message
+                to.receive(message, from);    
+            } else {                       // broadcast message
+                for (key in participants) {   
+                    if (participants[key] !== from) {
+                        participants[key].receive(message, from);
+                    }
+                }
+            }
         }
-
-        console.log("Daddy: Yeeah! My beer!");
-        kitchen.oneBeerHasGone();
-        return true;
-    },
-    argue_back: function () { console.log("Daddy: it's my last beer, for shure!"); }
-}
-
-function Mammy() { }
-
-
-Mammy.prototype = {
-    constructor: Mammy,
-
-    argue: function ()
-    {
-        console.log("Mammy: You are f*king alconaut!");
-        kitchen.disputeStarted();
+    };
+};
+ 
+// log helper
+ 
+var log = (function() {
+    var log = "";
+ 
+    return {
+        add: function(msg) { log += msg + "\n"; },
+        show: function() { alert(log); log = ""; }
     }
-}
-
-
-function BeerStorage(beer_bottle_count) {
-    this._beer_bottle_count = beer_bottle_count;
-}
-
-
-BeerStorage.prototype = {
-    constructor: BeerStorage,
-
-    takeOneBeerAway: function ()
-    {
-        if (this._beer_bottle_count == 0) return false;
-        this._beer_bottle_count--;
-        return true;
-    }
-}
-
-
-var kitchen =
-{
-    daddy: new Daddy(),
-    mammy: new Mammy(),
-    refrigerator: new BeerStorage(3),
-    stash: new BeerStorage(2),
-
-    tryToGetBeer: function ()
-    {
-        if (this.refrigerator.takeOneBeerAway()) return true;
-        if (this.stash.takeOneBeerAway()) return true;
-
-        return false
-    },
-    oneBeerHasGone: function (){ this.mammy.argue(); },
-    disputeStarted: function (){ this.daddy.argue_back(); }
+})();
+ 
+function run() {
+    var yoko = new Participant("Yoko");
+    var john = new Participant("John");
+    var paul = new Participant("Paul");
+    var ringo = new Participant("Ringo");
+ 
+    var chatroom = new Chatroom();
+    chatroom.register(yoko);
+    chatroom.register(john);
+    chatroom.register(paul);
+    chatroom.register(ringo);
+ 
+    yoko.send("All you need is love.");
+    yoko.send("I love you John.");
+    john.send("Hey, no need to broadcast", yoko);
+    paul.send("Ha, I heard that!");
+    ringo.send("Paul, what do you think?", paul);
+ 
+    log.show();
 }
