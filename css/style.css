@@ -35,6 +35,15 @@ Orange:
 
 */
 
+* {
+   -webkit-transition: all 100ms ease ;
+    -moz-transition: all 100ms ease ;
+    -o-transition: all 100ms ease ;
+    transition: all 100ms ease ;
+}
+
+.example {
+}
 
 body {
     background: #344a5f;
