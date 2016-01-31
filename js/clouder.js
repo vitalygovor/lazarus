@@ -44,36 +44,81 @@ var Clouder = {
 
                             if (index > -1) {
                                 BIDS.splice(index, 1);
+                                block.className = 'block';
                             } else {
                                 BIDS.push(key);
-                                Clouder.ui.block.style(block, key); 
+                                StyleForSelectedBlocks(block, key); 
                             }
                         }
 
                         function resetStylesForNotSelectedBlocks(key, block) {
+                            BIDS = [];
                             Each(BLOCKS, function(key, block){
                                 ChangeClasses(block, '', "block");
-                                if(key == CleckedBlock) ChangeClasses(block, 'selected', "block");
+                                if(key == CleckedBlock) {
+                                    BIDS.push(key);
+                                    console.log(BIDS);
+                                    ChangeClasses(block, 'selected', "block");
+                                }
                             });
                         }
+
+                        function StyleForSelectedBlocks(element, key){
+
+                            if(BIDS.length > 0){
+                               element.className = "block";
+                               element.className += " selected";
+                            }
+
+                        }
+
                         
                     });
                 });
+                
+                var el = document.getElementById('animate');
 
-                console.log(Clouder.BUFFER.block.select);
+                if(el){
+                  el.addEventListener('click', function(){
+                    wow = new WOW({
+                        boxClass:     'animation',      // default
+                        animateClass: 'animated', // default
+                        offset:       0,          // default
+                        mobile:       true,       // default
+                        live:         true        // default
+                    });
 
-            },
-            style: function(element, key){
+                    // node.getAttribute(attribute)
 
-                // Установка переменных буфера
-                var BUFFER = Clouder.BUFFER.block.select;
-                // Массив для блоков
-                var BIDS = BUFFER.blocks;
+                    for (var i = 0; i < BIDS.length; i++) {
+                        Each(BLOCKS, function(key, block){
+                           if(block.getAttribute("bid") == BIDS[i]) block.className += " animation swing";
+                        });   
+                    }
 
-                if(BIDS.length > 0){
-                   element.className = "block";
-                   element.className += " selected";
+                    wow.init();
+                  }, false);
+                } else {
+                    alert("No...");
                 }
+
+
+                function getAllElementsWithAttribute(attribute)
+                {
+                  var matchingElements = [];
+                  var allElements = document.getElementsByTagName('*');
+                  for (var i = 0, n = allElements.length; i < n; i++)
+                  {
+                    if (allElements[i].getAttribute(attribute) !== null)
+                    {
+                      // Element exists with attribute. Add to array.
+                      matchingElements.push(allElements[i]);
+                    }
+                  }
+                  return matchingElements;
+                }
+
+                console.log(BIDS);
 
             }
         }

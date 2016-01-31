@@ -74,3 +74,19 @@ body {
     margin: 3px;
     border: 2px solid #27ae60;
 }
+
+
+#animate {
+    background: #f39c12;
+    border-radius: 50px;
+    border: none;
+    padding: 5px 10px 5px 10px;
+    cursor: pointer;
+    color: #fff;
+    margin: 3px;
+    outline: none;
+}
+
+#animate:hover {
+    background:  #F3A831;
+}
