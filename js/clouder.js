@@ -21,60 +21,72 @@ var Clouder = {
                 var WinSelectOff = Clouder.func.clearSelection;
 
                 // Выбираем все блоки с классом block
-                var BLOCKS = document.getElementsByClassName('block');
-                
-                // Цикл по всем нужным элементам
-                Clouder.func.each(BLOCKS, function(key, block){
-                    WinSelectOff();
-                    block.style.cursor = "pointer";
-                    block.setAttribute("bid", key);
-                    // Прослушиваем действие
-                    block.addEventListener('click', function(event){
-                        var CleckedBlock = this.getAttribute('bid');
-                        
-                        if(event.shiftKey){
-                            GroupSelect(this, key);
-                        } else {
-                            resetStylesForNotSelectedBlocks();
-                            // Clouder.func.block.style(this, key);  
-                        }
+                var BLOCKS = updateBLOCKS();
 
-                        function GroupSelect(block, key){
-                            var index = BIDS.indexOf(key);
+                function updateBLOCKS(){
 
-                            if (index > -1) {
-                                BIDS.splice(index, 1);
-                                block.className = 'block';
+                    return document.getElementsByClassName('block');                    
+
+                }
+
+                function includeAllBlocks(){
+                    Clouder.func.each(BLOCKS, function(key, block){
+                        WinSelectOff();
+                        block.style.cursor = "pointer";
+                        block.setAttribute("bid", key);
+                        // Прослушиваем действие
+                        block.onclick = function(event){
+                            console.log('INTO CLICK: '+BLOCKS.length);
+                            var CleckedBlock = this.getAttribute('bid');
+                            
+                            if(event.shiftKey){
+                                GroupSelect(this, key);
                             } else {
-                                BIDS.push(key);
-                                StyleForSelectedBlocks(block, key); 
+                                resetStylesForNotSelectedBlocks();
+                                // Clouder.func.block.style(this, key);  
                             }
-                        }
 
-                        function resetStylesForNotSelectedBlocks(key, block) {
-                            BIDS = [];
-                            Each(BLOCKS, function(key, block){
-                                ChangeClasses(block, '', "block");
-                                if(key == CleckedBlock) {
+                            function GroupSelect(block, key){
+                                var index = BIDS.indexOf(key);
+
+                                if (index > -1) {
+                                    BIDS.splice(index, 1);
+                                    block.className = 'block';
+                                } else {
                                     BIDS.push(key);
-                                    console.log(BIDS);
-                                    ChangeClasses(block, 'selected', "block");
+                                    StyleForSelectedBlocks(block, key); 
                                 }
-                            });
-                        }
-
-                        function StyleForSelectedBlocks(element, key){
-
-                            if(BIDS.length > 0){
-                               element.className = "block";
-                               element.className += " selected";
                             }
 
-                        }
+                            function resetStylesForNotSelectedBlocks(key, block) {
+                                BIDS = [];
+                                Each(BLOCKS, function(key, block){
+                                    ChangeClasses(block, '', "block");
+                                    if(key == CleckedBlock) {
+                                        BIDS.push(key);
+                                        console.log(BIDS);
+                                        ChangeClasses(block, 'selected', "block");
+                                    }
+                                });
+                            }
 
-                        
+                            function StyleForSelectedBlocks(element, key){
+
+                                if(BIDS.length > 0){
+                                   element.className = "block";
+                                   element.className += " selected";
+                                }
+
+                            }
+                        }
                     });
-                });
+                }
+
+                console.log('test');
+                // Цикл по всем нужным элементам
+                
+
+                includeAllBlocks();
             
                 var el = document.getElementById('animate');
 
@@ -108,6 +120,7 @@ var Clouder = {
 
                 if(cr){
                     cr.addEventListener('click', function(){
+                        console.log(BLOCKS);
                         var block = document.createElement("div");
                         block.className = "block";
                         var attr = document.createAttribute("bid");
@@ -117,11 +130,11 @@ var Clouder = {
                         block.setAttributeNode(attr);
                         var blocks = document.getElementById("blocks");
                         blocks.appendChild(block); 
-                        BLOCKS = document.getElementsByClassName('block');
-                        console.log(BLOCKS.length);
-                    })
+                        includeAllBlocks();
+                    });
                 }
 
+                console.log(BLOCKS.length);
 
                 function getAllElementsWithAttribute(attribute)
                 {
