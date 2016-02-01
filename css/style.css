@@ -51,7 +51,7 @@ body {
 
 /*  group selecting   */
 
-.blocks {
+#blocks {
     display: inline-block;
     text-align: center;
     margin-top: 100px;
@@ -89,4 +89,19 @@ body {
 
 #animate:hover {
     background:  #F3A831;
+}
+
+#create {
+    background: #83D05D;
+    border-radius: 50px;
+    border: none;
+    padding: 5px 10px 5px 10px;
+    cursor: pointer;
+    color: #fff;
+    margin: 3px;
+    outline: none;
+}
+
+#create:hover {
+    background:  #77BD55;
 }

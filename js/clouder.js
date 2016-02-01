@@ -75,7 +75,7 @@ var Clouder = {
                         
                     });
                 });
-                
+            
                 var el = document.getElementById('animate');
 
                 if(el){
@@ -100,6 +100,26 @@ var Clouder = {
                   }, false);
                 } else {
                     alert("No...");
+                }
+
+                var cr = document.getElementById('create');
+                
+
+
+                if(cr){
+                    cr.addEventListener('click', function(){
+                        var block = document.createElement("div");
+                        block.className = "block";
+                        var attr = document.createAttribute("bid");
+                        console.log(BIDS);
+                        var maxBID = BLOCKS.length;
+                        attr.value = maxBID;
+                        block.setAttributeNode(attr);
+                        var blocks = document.getElementById("blocks");
+                        blocks.appendChild(block); 
+                        BLOCKS = document.getElementsByClassName('block');
+                        console.log(BLOCKS.length);
+                    })
                 }
 
 
